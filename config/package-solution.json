@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "share-point-test-2-client-side-solution",
+    "id": "4324714c-d655-4a13-ab02-675cbdebf3eb",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
+  },
+  "paths": {
+    "zippedPackage": "solution/share-point-test-2.sppkg"
+  }
+}
