@@ -72,8 +72,32 @@
     }
   }
 
+  .listItem {
+    color: #333333;
+    vertical-align: center;
+    font-family: "Segoe UI WestEuropean", "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    *zoom: 1; 
+    padding: 9px 28px 3px;
+    position: relative;
+  }
+
   .list {
-    color: #333333,
-    font-family: "Segoe UI WestEuropean", "Segoe UI", Tahoma, Arial, sans-serif
+    color: #333333;
+    font-family: "Segoe UI WestEuropean", "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    box-shadow: none;
+    *zoom: 1; 
+    padding: 9px 28px 3px;
+    position: relative;
   }
 }
