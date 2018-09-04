@@ -18,6 +18,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './HelloWorldWebPart.module.scss';
 import * as strings from 'HelloWorldWebPartStrings';
+
 import MockHttpClient from './MockHttpClient';
 
 export interface IHelloWorldWebPartProps {
@@ -47,9 +48,13 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
     }) as Promise<ISPLists>; 
   }
 
-  // private _getListData(): Promise<ISPList>{
-  //   return SPHttpClient.get()
-  // }
+  private _getListData(): Promise<ISPList>{
+    return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + '/_api/web/lists?$filter=Hidden eq false',
+    SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => {
+      return response.json();
+    });
+  }
 
   public render(): void {
     this.domElement.innerHTML = `
