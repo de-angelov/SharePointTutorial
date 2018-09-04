@@ -14,6 +14,12 @@ import {
   SPHttpClientResponse,
 } from '@microsoft/sp-http';
 
+import {
+  Environment,
+  EnvironmentType,
+} from '@microsoft/sp-core-library';
+
+
 import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './HelloWorldWebPart.module.scss';
@@ -40,20 +46,48 @@ export interface ISPList {
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
 
-  private _getMockListData(): Promise<ISPLists> {
-    return MockHttpClient.get()
-    .then((data: ISPList  [])=>{
-      let listData: ISPLists = { value: data };
-      return listData;
-    }) as Promise<ISPLists>; 
+  private _renderList(items: ISPList[]):void {
+    let html: string = '';
+    items.forEach((item: ISPList) => {
+      html += `
+      <ul class="${styles.list}">
+        <li class="${styles.listItem}">
+          <span class="ms-font-1" >${item.Title}</span>
+        </li>
+      </ul>
+      `;
+    }) 
+  }
+  
+  private _renderListAsync(): void {
+    //local environment
+    if (Environment.type === EnvironmentType.Local) {
+      this._getMockListData().then((response) => {
+        this._renderList(response.value);
+      })
+    }
+    else if (Environment.type == EnvironmentType.SharePoint || Environment.type == EnvironmentType.ClassicSharePoint) {
+      this._getListData()
+        .then((response) => {
+          this._renderList(response.value);
+        });
+    }
   }
 
-  private _getListData(): Promise<ISPList>{
+  private _getMockListData(): Promise<ISPLists> {
+    return MockHttpClient.get()
+      .then((data: ISPList[]) => {
+        let listData: ISPLists = { value: data };
+        return listData;
+      }) as Promise<ISPLists>;
+  }
+
+  private _getListData(): Promise<ISPLists> {
     return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + '/_api/web/lists?$filter=Hidden eq false',
-    SPHttpClient.configurations.v1)
-    .then((response: SPHttpClientResponse) => {
-      return response.json();
-    });
+      SPHttpClient.configurations.v1)
+      .then((response: SPHttpClientResponse) => {
+        return response.json();
+      });
   }
 
   public render(): void {
